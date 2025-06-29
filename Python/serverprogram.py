@@ -5,6 +5,7 @@ import threading
 
 clients = []
 
+
 def handleClient(connection):
     while True:   
         try:
