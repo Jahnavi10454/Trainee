@@ -5,15 +5,15 @@ import threading
 
 clients = []
 
-
 def handleClient(connection):
     while True:   
         try:
             message = connection.recv(1024).decode()
+            # hostname = socket.gethostbyaddr(addr)
             broadcast(connection, message)
             if message == 'bye':
                 connection.close()
-                client.remove(connection)
+                clients.remove(connection)
                 break
         except:
             break     
@@ -30,6 +30,6 @@ print("waiting for connections....")
 while True:
     connection, addr = serverSocket.accept()
     print(f"connected to the {addr}")
-    client = threading.Thread(target=handleClient, args=(connection,))
+    client = threading.Thread(target=handleClient, args=(connection, ))
     client.start()
     clients.append(connection) 
