@@ -4,7 +4,7 @@ import tkinter as tkr
 
 root = tkr.Tk()
 root.title("CHATTING APPLICATION")
-root.geometry("300x500")
+root.geometry("300x550")
 message = ""
 clientName = ""
 
@@ -37,7 +37,6 @@ def sendMessage(clientSocket):
     text.configure(state="disabled")
     if sentMessage == 'bye':
         root.destroy()
-        clientSocket.close()
     else:
         entry.delete(0, tkr.END)
 
@@ -46,6 +45,9 @@ def recvMessage(clientSocket):
         global message
         try:
             recievedMessage = clientSocket.recv(1024).decode()
+            if recievedMessage == 'bye':
+                clientSocket.close()
+                break
             message = message + "\n" + recievedMessage
             text.configure(state="normal")
             text.delete("1.0", tkr.END)
