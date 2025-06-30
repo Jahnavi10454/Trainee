@@ -12,7 +12,7 @@ userFrame = tkr.Frame(root)
 chatFrame = tkr.Frame(root)
 
 userFrame.pack(expand=True)
-tkr.Label(userFrame, width=250, height=1, text = "Enter user name", justify="left").pack(padx=10, pady=20)
+tkr.Label(userFrame, width=250, height=1, text = "Enter user name").pack(padx=10, pady=20)
 userName = tkr.Entry(userFrame, width=200)
 userName.pack(padx=35, pady=25)
 userName.bind("<Return>", lambda event: startChatting())
@@ -23,7 +23,7 @@ def startChatting():
     global clientName
     clientName = userName.get()
     if clientName:
-        userFrame.pack_forget()
+        userFrame.destroy()
         chatFrame.pack()
 
 def sendMessage(clientSocket):
@@ -60,19 +60,18 @@ recv = threading.Thread(target = recvMessage, args = (clientSocket, ))
 recv.start()
 
 textFrame = tkr.Frame(chatFrame)
-textFrame.pack(padx=10, pady=20, fill='both', expand=True)
+textFrame.pack(padx=10, pady=20)
 
-text = tkr.Text(textFrame, width=500, height=25, background="lightblue")
 scrollbar = tkr.Scrollbar(textFrame, orient='vertical')
-scrollbar.pack(side='right', fill='y')
+scrollbar.pack(side="right", fill="y")
 
 text = tkr.Text(textFrame, width=50, height=25, background="lightblue", yscrollcommand=scrollbar.set)
 text.pack(side='left', expand=True)
 
-scrollbar.config(command=text.yview)
+scrollbar.configure(command=text.yview)
 
 text.insert(tkr.END, "Let's communicate!")
-text.config(yscrollcommand=scrollbar.set, state="disabled")
+text.config(state="disabled")
 
 entry = tkr.Entry(chatFrame, width=200)
 entry.pack(padx=10, pady=15)
